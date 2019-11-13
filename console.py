@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""model console"""
 import cmd
 from models.base_model import BaseModel
 base = BaseModel()
@@ -6,10 +7,10 @@ base = BaseModel()
 
 class HBNBCommand(cmd.Cmd):
     """Command example"""
-    
 
     list_t = list()
     prompt = '(hbnb) '
+
     def do_EOF(self, line):
         return True
 
@@ -31,6 +32,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_show(self):
         print('Print the string representation\n')
+
     def do_create(self, line):
         if line is "":
             print('** class name missing **')
@@ -77,6 +79,7 @@ class HBNBCommand(cmd.Cmd):
             print('** class doesn\'t exist **')
         else:
             print('{}'.format(str(self.list_t)))
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
