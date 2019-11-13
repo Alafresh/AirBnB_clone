@@ -14,7 +14,7 @@ class BaseModel:
         if kwargs:
             """ dictionary representation """
             for key, value in kwargs.items():
-                if key == 'created_at' or key == 'update_at':
+                if key == 'created_at' or key == 'updated_at':
                     self.__dict__[key] = datetime.strptime(
                         value, '%Y-%m-%dT%H:%M:%S.%f')
                 elif key == '__class__':
@@ -24,7 +24,7 @@ class BaseModel:
         else:
             """ new instance """
             self.id = str(uuid4())
-            self.update_at = datetime.now()
+            self.updated_at = datetime.now()
             self.created_at = datetime.now()
             models.storage.new(self)
 
@@ -35,13 +35,18 @@ class BaseModel:
 
     def save(self):
         """ save the changes and update the date """
-        self.update_at = datetime.now()
+        self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        """ return a dictionary """
-        dictionary = self.__dict__.copy()
-        dictionary.update({'__class__': self.__class__.__name__})
-        dictionary.update({'created_at': self.created_at.isoformat()})
-        dictionary.update({'update_at': self.update_at.isoformat()})
+        """ to dict() """
+
+        dictionary = {}
+        for key, value in self.__dict__.items():
+            if key == 'created_at' or key == 'updated_at':
+                dictionary[key] = value.isoformat()
+            else:
+                dictionary[key] = value
+        dictionary['__class__'] = self.__class__.__name__
+
         return dictionary

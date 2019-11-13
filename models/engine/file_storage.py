@@ -36,7 +36,7 @@ class FileStorage:
         if path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, 'r', encoding='utf-8')as file:
                 data = {}
-                data = json.load(file).items()
-                for key, value in data:
+                data = json.load(file)
+                for key, value in data.items():
                     val = value['__class__']
-                    self.__objects[key] = globals()[val](**value)
+                    FileStorage.__objects[key] = globals()[val](**value)
