@@ -1,24 +1,21 @@
 #!/usr/bin/python3
 """ model base """
-from uuid import uuid4
-from datetime import datetime
 import models
+from datetime import datetime
+from uuid import uuid4
 
 
-class BaseModel():
+class BaseModel:
     """Base Class"""
 
     def __init__(self, *args, **kwargs):
         """ constructor """
 
-        if len(kwargs) > 0:
+        if kwargs:
             """ dictionary representation """
             for key, value in kwargs.items():
-                if key == 'created_at':
-                    self.created_at = datetime.strptime(
-                        value, '%Y-%m-%dT%H:%M:%S.%f')
-                elif key == 'update_at':
-                    self.update_at = datetime.strptime(
+                if key == 'created_at' or key == 'update_at':
+                    self.__dict__[key] = datetime.strptime(
                         value, '%Y-%m-%dT%H:%M:%S.%f')
                 elif key == '__class__':
                     continue
