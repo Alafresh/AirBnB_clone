@@ -37,12 +37,13 @@ class Test_BaseModel(unittest.TestCase):
 
 
     def test_str(self):
-        """ Test str
-        mockito = BaseModel()
-        created = datetime.datetime(2019, 10, 10, 10, 10, 10, 10000)
-        update = datetime.datetime(2019, 10, 10, 10, 10, 10, 10000)
-        setattr(mockito, 'id', 'bf0b59b8-69a6-4b27-b9ff-49d48cce7f35')
-        setattr(mockito, 'created_at', created)
-        setattr(mockito, 'update_at', update) """
-        
         self.assertIsNotNone(self.test_base)
+
+    def test_dict(self):
+        obj_dict = self.test_base.__dict__
+        self.assertEqual(self.test_base.__class__.__name__, "BaseModel")
+        self.assertTrue(type(obj_dict) == dict)
+
+    def test_save(self):
+        self.test_base.save()
+        self.assertNotEqual(self.test_base.created_at, self.test_base.updated_at)
