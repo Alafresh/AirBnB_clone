@@ -68,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
                 obj = data[key]
                 print(obj)
             else:
-                error(4)
+                errores(4)
 
     def do_destroy(self, line):
         new_line = line.split()
