@@ -11,14 +11,14 @@ def errores(x):
     """returns error messages
         - x: as argument identifier for error msg
     """
-    err_dict = {1: "** class name missing **",
-                2: "** class doesn't exist **",
-                3: "** instance id missing **",
-                4: "** no instance found **",
-                5: "** name missing **",
-                6: "** value missing **"
-                }
-    for key, item in err_dict.items():
+    errores = {1: "** class name missing **",
+               2: "** class doesn't exist **",
+               3: "** instance id missing **",
+               4: "** no instance found **",
+               5: "** name missing **",
+               6: "** value missing **"
+               }
+    for key, item in errores.items():
         if key == x:
             print(item)
 
@@ -77,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
         elif new_line[0] not in self.Class_dict:
             errores(2)
         elif len(new_line) < 2:
-            error(3)
+            errores(3)
         else:
             data = models.storage.all()
             key = "{}.{}".format(new_line[0], new_line[1])
