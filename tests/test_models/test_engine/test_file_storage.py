@@ -22,7 +22,12 @@ class Test_FileStorage(unittest.TestCase):
 
     def test_has_attributes(self):
         """ Test if the class has all the attributes"""
-        pass
+        self.assertIsNotNone(hasattr(FileStorage, "__file_path"))
+        self.assertIsNotNone(hasattr(FileStorage, '__objects'))
+        self.assertIsNotNone(hasattr(FileStorage, 'all'))
+        self.assertIsNotNone(hasattr(FileStorage, 'new'))
+        self.assertIsNotNone(hasattr(FileStorage, 'save'))
+        self.assertIsNotNone(hasattr(FileStorage, 'reload'))
 
     def test_pep8_conformance(self):
         """ Test that we conform to PEP8 """
