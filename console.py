@@ -16,7 +16,8 @@ def errores(x):
                3: "** instance id missing **",
                4: "** no instance found **",
                5: "** name missing **",
-               6: "** value missing **"
+               6: "** value missing **",
+               7: "** attribute name missing **"
                }
     for key, item in errores.items():
         if key == x:
@@ -118,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(new_line) < 2:
             errores(3)
         elif len(new_line) < 3:
-            errores(5)
+            errores(7)
         elif len(new_line) < 4:
             errores(6)
         else:
