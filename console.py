@@ -1,84 +1,137 @@
 #!/usr/bin/python3
 """model console"""
 import cmd
+import json
 from models.base_model import BaseModel
+import models
 base = BaseModel()
+
+
+def errores(x):
+    """returns error messages
+        - x: as argument identifier for error msg
+    """
+    err_dict = {1: "** class name missing **",
+                2: "** class doesn't exist **",
+                3: "** instance id missing **",
+                4: "** no instance found **",
+                5: "** name missing **",
+                6: "** value missing **"
+                }
+    for key, item in err_dict.items():
+        if key == x:
+            print(item)
 
 
 class HBNBCommand(cmd.Cmd):
     """Command example"""
 
-    list_t = list()
     prompt = '(hbnb) '
 
+    Class_dict = {'BaseModel'}
+
     def do_EOF(self, line):
+        """EOF signal to interrupt a file"""
         return True
 
     def do_quit(self, line):
-        exit()
+        """Quit command to exit the program"""
         return True
 
     def emptyline(self):
         pass
 
-    def help_EOF(self):
-        print('EOF signal to interrupt a file\n')
-
-    def help_quit(self):
-        print('Quit command to exit the program\n')
-
-    def help_create(self):
-        print('Create a new instance of BaseModel\n')
-
-    def help_show(self):
-        print('Print the string representation\n')
-
     def do_create(self, line):
-        if line is "":
-            print('** class name missing **')
-        elif line != 'BaseModel':
-            print('** class doesn\'t exist **')
+        if line is '':
+            errores(1)
+        elif line not in self.Class_dict:
+            errores(2)
         else:
-            self.list_t = base
-            print(self.list_t.id)
+            obj = eval(line)()
+            obj.save()
+            print(obj.id)
 
     def do_show(self, line):
-        linea = line.split(' ')
-        if len(linea) < 1:
-            print('** instance id missing **')
-        elif linea[0] is "":
-            print('** class name missing **')
-        elif linea[0] != 'BaseModel':
-            print('** class doesn\'t exist **')
-        elif len(linea) < 2:
-            print('** instance id missing **')
-        elif not self.list_t:
-            print('** no instance found **')
-        elif linea[1] != self.list_t.id:
-            print('** no instance found **')
+        new_line = line.split()
+
+        if new_line is '':
+            errores(1)
+        elif new_line[0] not in self.Class_dict:
+            errores(2)
+        elif len(new_line) < 2:
+            errores(3)
         else:
-            print(self.list_t)
+            data = models.storage.all()
+            key = "{}.{}".format(new_line[0], new_line[1])
+            if key in data.keys():
+                obj = data[key]
+                print(obj)
+            else:
+                error(4)
 
     def do_destroy(self, line):
-        linea = line.split(' ')
-        ide = base.id
-        if linea[0] is "":
-            print('** class name missing **')
-        elif linea[0] != 'BaseModel':
-            print('** class doesn\'t exist')
-        elif len(linea) < 1:
-            print('** instance id missing **')
-        elif linea[1] != ide:
-            print('** no instance found **')
+        new_line = line.split()
+
+        if new_line is '':
+            errores(1)
+        elif new_line[0] not in self.Class_dict:
+            errores(2)
+        elif len(new_line) < 2:
+            error(3)
         else:
-            del self.list_t
+            data = models.storage.all()
+            key = "{}.{}".format(new_line[0], new_line[1])
+            if key in data.keys():
+                del data[key]
+                models.storage._FileStorage__objects = data
+                models.storage.save()
+            else:
+                errores(4)
 
     def do_all(self, line):
-        linea = line.split()
-        if linea[0] != 'BaseModel':
-            print('** class doesn\'t exist **')
+        new_line = line.split()
+        data = models.storage.all()
+        new_list = []
+        if line is '':
+            for key_ins, val_obj in data.items():
+                new_list.append(str(val_obj))
+            print(new_list)
         else:
-            print('{}'.format(str(self.list_t)))
+            if new_line[0] not in self.Class_dict:
+                errores(2)
+            else:
+                for key_ins, val_obj in data.items():
+                    key_class = val_obj.to_dict()
+                    if key_class['__class__'] == new_line[0]:
+                        new_list.append(str(val_obj))
+
+                print(new_list)
+
+    def do_update(self, line):
+        new_line = line.split()
+        data = models.storage.all()
+
+        if line is '':
+            errores(1)
+        elif new_line[0] not in self.Class_dict:
+            errores(2)
+        elif len(new_line) < 2:
+            errores(3)
+        elif len(new_line) < 3:
+            errores(5)
+        elif len(new_line) < 4:
+            errores(6)
+        else:
+            key = "{}.{}".format(new_line[0], new_line[1])
+            if key in data:
+                """data_temp = data[key].to_dict()
+                data_temp.update({new_line[2]: new_line[3]})
+                new_instance = globals()[new_line[0]](**data_temp)
+                new_instance.save()"""
+                new_instance = data[key]
+                setattr(new_instance, new_line[2], new_line[3])
+            else:
+                errores(4)
 
 
 if __name__ == '__main__':
