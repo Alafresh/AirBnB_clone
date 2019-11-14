@@ -57,7 +57,7 @@ class HBNBCommand(cmd.Cmd):
 
         if new_line is '':
             errores(1)
-        elif len(new_line) < 1:
+        elif new_line[0] not in self.Class_dict:
             errores(2)
         elif len(new_line) < 2:
             errores(3)
@@ -75,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
 
         if new_line is '':
             errores(1)
-        elif len(new_line) < 1:
+        elif new_line[0] not in self.Class_dict:
             errores(2)
         elif len(new_line) < 2:
             errores(3)
