@@ -42,8 +42,13 @@ class Test_BaseModel(unittest.TestCase):
     def test_dict(self):
         obj_dict = self.test_base.__dict__
         self.assertEqual(self.test_base.__class__.__name__, "BaseModel")
-        self.assertTrue(type(obj_dict) == dict)
+        self.assertTrue(isinstance(obj_dict,dict))
 
     def test_save(self):
         self.test_base.save()
         self.assertNotEqual(self.test_base.created_at, self.test_base.updated_at)
+
+    def has_attribute(self):
+        self.assertTrue(hasattr(BaseModel, "id"))
+        self.assertTrue(hasattr(BaseModel, "created_at"))
+        self.assertTrue(hasattr(BaseModel, "updated_at"))
