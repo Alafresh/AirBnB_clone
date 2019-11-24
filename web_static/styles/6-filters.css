@@ -15,6 +15,7 @@ button:hover {
 }
 .container {
   border-right: 1px solid #DDDDDD;
+  max-height: 70px;
 }
 .container .filters {
   position: relative;
